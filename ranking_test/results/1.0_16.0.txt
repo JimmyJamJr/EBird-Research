@@ -1,0 +1,18 @@
+eps=1.0 days/eps=16.0
+
+1. Gray Catbird.txt 81
+2. Lesser Black-backed Gull.txt 78
+3. Sabines Gull.txt 52
+4. Brown Thrasher.txt 43
+5. Mew Gull.txt 42
+6. Lark Bunting.txt 34
+7. Long-tailed Duck.txt 34
+8. Acorn Woodpecker.txt 31
+9. Eastern Phoebe.txt 28
+10. Parasitic Jaeger.txt 15
+11. Red Phalarope.txt 9
+12. Red-faced Warbler.txt 6
+13. Long-tailed Jaeger.txt 6
+14. Groove-billed Ani.txt 5
+15. Ruff.txt 3
+16. Huttons Vireo.txt 1

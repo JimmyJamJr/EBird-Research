@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS445781400	2016-11-28 10:44:29	5971	slash	Common/Spotted Sandpiper	Actitis hypoleucos/macularius			1				United States	US	Nevada	US-NV	Lincoln	US-NV-017	US-NV_976	9	USFWS_534		Pahranagat NWR--Upper Lake	L456496	H	37.2945399	-115.1236725	2016-11-05	11:15:00	obsr682131	S32753539	Traveling	P22	EBIRD	310	3.219		1	1		1	1	1				

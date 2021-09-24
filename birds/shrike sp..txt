@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS289481802	2017-08-16 16:13:53	20232	spuh	shrike sp.	Lanius sp.			1				United States	US	Nevada	US-NV	Nye	US-NV-023	US-NV_977	33	USFWS_350		AMNWR-Crystal Reservoir Loop Road	L492988	P	36.4170003	-116.3380051	2015-01-06	07:29:00	obsr89980	S21222660	Traveling	P22	EBIRD	10	4.023		1	1		0	1	1		<br />Submitted from BirdLog NA for iOS, version 1.7.6		

@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS393009866	2016-05-13 16:13:07	23089	slash	Tree/Violet-green Swallow	Tachycineta bicolor/thalassina			1				United States	US	Nevada	US-NV	Clark	US-NV-003		33			Mesquite (town)	L4127791	P	36.8083398	-114.0644574	2016-04-16	13:10:00	obsr295352	S29062673	Incidental	P20	EBIRD				1	0		0	1	1				

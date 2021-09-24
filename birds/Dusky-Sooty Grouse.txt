@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS54506159	2015-03-11 13:50:07	1687	slash	Dusky/Sooty Grouse	Dendragapus obscurus/fuliginosus			1				United States	US	Nevada	US-NV	Carson City	US-NV-510	US-NV_2211	15			Clear Creek	L554474	P	39.1304597	-119.8913956	1993-07-16		obsr106559	S3908064	Incidental	P20	EBIRD					0		0	1	1				

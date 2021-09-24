@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS441453043	2016-11-11 10:36:31	6546	slash	Arctic/Pacific Loon	Gavia arctica/pacifica			1				United States	US	Nevada	US-NV	Clark	US-NV-003	US-NV_982	33			Lake mead, sunset overlook	L5069546	P	36.0970538	-114.8227125	2016-11-08	17:00:00	obsr512399	S32443954	Traveling	P22	EBIRD	20	1.609		3	0		0	1	1			Seen with Ben zyla and Alex harper	

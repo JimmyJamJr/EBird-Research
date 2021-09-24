@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS97035380	2013-04-08 10:38:22	30490	species	Eastern Yellow Wagtail	Motacilla tschutschensis			1				United States	US	Nevada	US-NV	Clark	US-NV-003		33			Hemenway Park	L785736	P	35.9800725	-114.8346484	1994-09-11		obsr121218	S6777763	Incidental	P20	EBIRD					0		0	1	1			Submitted by: John A. Blackwell;  Found by: John A. Blackwell	

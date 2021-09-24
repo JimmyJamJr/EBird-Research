@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS800433677	2019-09-03 16:24:28	7319	spuh	ibis sp.	Threskiornithidae sp. (ibis sp.)			X				United States	US	Nevada	US-NV	Clark	US-NV-003		33			Las Vegas Urban--Clark County Wetlands Park	L160294	H	36.1006947	-115.0224620	2019-09-01	06:30:00	obsr1218974	S59428381	Traveling	P22	EBIRD	131	3.164		2	1		0	1	1			In flight	

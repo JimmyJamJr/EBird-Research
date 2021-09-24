@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS680684198	2018-12-07 00:21:46	344	spuh	swan sp.	Cygnus sp.			4				United States	US	Nevada	US-NV	Washoe	US-NV-031		9			White Lake	L8191618	P	39.6622480	-119.9755180	2018-11-26	10:59:00	obsr93553	S50257053	Traveling	P22	EBIRD	15	4.023		1	1		0	1	1			dark-billed but very distant and could not exclude Trumpeter.	

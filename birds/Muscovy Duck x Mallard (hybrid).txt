@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS220460660	2018-08-04 09:11:50	475	hybrid	Muscovy Duck x Mallard (hybrid)	Cairina moschata x Anas platyrhynchos			1				United States	US	Nevada	US-NV	Washoe	US-NV-031		9			Reno - Lake Park	L269709	H	39.5384031	-119.8360348	2013-12-07	07:15:00	obsr112083	S15895822	Traveling	P22	EBIRD	60	3.219		1	1		0	1	1		Snowy and cold.	A grody monstrosity.	

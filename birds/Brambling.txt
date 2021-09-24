@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS97039676	2016-07-07 11:49:47	30754	species	Brambling	Fringilla montifringilla			1				United States	US	Nevada	US-NV	Washoe	US-NV-031		9			Sutcliffe (town)	L4767879	H	39.9490625	-119.6007822	1978-10-31		obsr121218	S6778577	Incidental	P20	EBIRD					0		0	1	1			Submitted by: David Galat; Photographed.	

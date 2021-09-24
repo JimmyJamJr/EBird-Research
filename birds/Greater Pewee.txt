@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS97038925	2020-06-18 10:57:55	16118	species	Greater Pewee	Contopus pertinax			1				United States	US	Nevada	US-NV	Clark	US-NV-003		33			Las Vegas--Sunset Park	L456488	H	36.0685619	-115.1126862	1997-05-15		obsr121218	S6778440	Incidental	P20	EBIRD					0		0	1	1			Submitted by: Rita Schlageter;  Found by: Rita Schlageter	

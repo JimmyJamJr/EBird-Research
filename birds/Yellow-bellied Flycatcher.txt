@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS97035415	2010-08-18 12:49:58	16176	species	Yellow-bellied Flycatcher	Empidonax flaviventris			1				United States	US	Nevada	US-NV	Nye	US-NV-023	US-NV_940	33			Torrance Ranch	L456897	H	37.0029254	-116.7242163	2000-10-14		obsr121218	S6777797	Incidental	P20	EBIRD					0		0	1	1			Submitted by: Michael Patten; Photographed.	

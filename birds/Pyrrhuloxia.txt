@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS97035692	2013-04-08 10:18:38	33214	species	Pyrrhuloxia	Cardinalis sinuatus			1				United States	US	Nevada	US-NV	Clark	US-NV-003		33			Henderson	L131111	T	36.0396805	-114.9818268	1979-12-15		obsr121218	S6777943	Incidental	P20	EBIRD					0		0	1	1			Submitted by: Frank and Polly Long; Photographed.	

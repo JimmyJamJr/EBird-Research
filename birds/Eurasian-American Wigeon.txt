@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS379428456	2018-08-04 09:41:08	450	slash	Eurasian/American Wigeon	Mareca penelope/americana			1				United States	US	Nevada	US-NV	Nye	US-NV-023		33			Pahrump--Discovery Park (Willow Creek Golf Course)	L3176856	H	36.2018627	-115.9951973	2016-03-05	06:30:00	obsr368582	S27986497	Traveling	P22	EBIRD	340	4.828		1	1		1	1	1				

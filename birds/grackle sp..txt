@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS901353417	2020-04-24 15:19:13	32621	spuh	grackle sp.	Quiscalus sp.			30				United States	US	Nevada	US-NV	Clark	US-NV-003		33			Cornerstone Park	L2753168	H	36.0369429	-115.0544178	2020-04-23	18:00:00	obsr1029919	S67704423	Stationary	P21	EBIRD	90			2	1		0	1	1				

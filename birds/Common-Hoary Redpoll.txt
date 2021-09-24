@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS97039672	2012-08-31 14:01:28	31265	slash	Common/Hoary Redpoll	Acanthis flammea/hornemanni			1				United States	US	Nevada	US-NV	Washoe	US-NV-031		9			Reno	L130603	T	39.5296097	-119.8140182	2001-12-17		obsr121218	S6778573	Incidental	P20	EBIRD					0		0	1	1			Submitted by: John Anderson	

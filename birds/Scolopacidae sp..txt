@@ -1,0 +1,1 @@
+URN:CornellLabOfOrnithology:EBIRD:OBS72185115	2010-01-14 13:03:43	5999	spuh	Scolopacidae sp.	Scolopacidae sp.			2				United States	US	Nevada	US-NV	Nye	US-NV-023	US-NV_977	33	USFWS_350		Ash Meadows NWR--Crystal Reservoir	L509291	H	36.4078135	-116.3232422	2009-06-23	12:30:00	obsr158489	S5124069	Traveling	P22	EBIRD	30	0.644		1	1		0	1	1				
