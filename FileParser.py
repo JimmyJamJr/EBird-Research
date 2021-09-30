@@ -27,7 +27,7 @@ def get_birds(filename):
             latitude = line_arr[25]
             longitude = line_arr[26]
             distance = 0 if line_arr[35] == "" else float(line_arr[35])
-            print("order: ", order, "count: ", count, "lat: ", latitude, "long: ", longitude, "distance: ", distance, "time: ", time)
+            # print("order: ", order, "count: ", count, "lat: ", latitude, "long: ", longitude, "distance: ", distance, "time: ", time)
 
             data.append(Entry(time, order, int(count), float(latitude), float(longitude), distance))
 
