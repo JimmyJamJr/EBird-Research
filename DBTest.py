@@ -11,6 +11,8 @@ from datetime import timezone
 
 from sklearn.cluster import DBSCAN
 
+import FileParser
+
 @dataclass
 class Entry:
     time: datetime
@@ -25,26 +27,8 @@ def lerp(min, max, val):
     return min + val * (max - min)
 
 
-filename = "Lesser Black-backed Gull.txt"
-data = []
-
-with open(filename) as file:
-    for line in file:
-        line_arr = line.split("\t")
-        try:
-            time = datetime.strptime(line_arr[27] + " " + line_arr[28], '%Y-%m-%d %H:%M:%S')
-        except:
-            continue
-        order = float(line_arr[2])
-        count = line_arr[8]
-        latitude = line_arr[25]
-        longitude = line_arr[26]
-        distance = 0 if line_arr[35] == "" else float(line_arr[35])
-        try:
-            data.append(Entry(time, order, int(count), float(latitude), float(longitude), distance))
-        except:
-            print("Error on Entry: ", line)
-            continue
+filename = "Sabines Gull.txt"
+data = FileParser.get_birds(filename)
 
 
 SECONDS_IN_YR = 31536000
@@ -55,7 +39,7 @@ eps = [4., 6., 12.]
 fig = plt.figure()
 
 for i in range(3):
-    time_to_space_ratios = np.arange(.1, 20., .1)
+    time_to_space_ratios = [.25, .5, 1, 2, 4, 8, 12, 24]
     num_clusters = []
 
     for ratio in time_to_space_ratios:

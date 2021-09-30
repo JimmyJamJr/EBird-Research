@@ -7,6 +7,9 @@ import numpy as np
 
 from sklearn.cluster import DBSCAN
 
+import FileParser
+
+
 @dataclass
 class Entry:
     time: datetime
@@ -35,24 +38,7 @@ for eps in eps_list:
                 if not filename.endswith("txt"):
                     continue
 
-                data = []
-                with open("ranking_test/birds/" + filename) as file:
-                    for line in file:
-                        line_arr = line.split("\t")
-                        try:
-                            time = datetime.strptime(line_arr[27] + " " + line_arr[28], '%Y-%m-%d %H:%M:%S')
-                        except:
-                            continue
-                        order = float(line_arr[2])
-                        count = line_arr[8]
-                        latitude = line_arr[25]
-                        longitude = line_arr[26]
-                        distance = 0 if line_arr[35] == "" else float(line_arr[35])
-                        try:
-                            data.append(Entry(time, order, int(count), float(latitude), float(longitude), distance))
-                        except:
-                            print("Error on Entry: ", line)
-                            continue
+                data = FileParser.get_birds("ranking_test/birds/" + filename)
 
                 points = []
                 for entry in data:

@@ -13,6 +13,8 @@ from datetime import timezone
 
 from sklearn.cluster import DBSCAN
 
+import FileParser
+
 @dataclass
 class Entry:
     time: datetime
@@ -37,45 +39,34 @@ def geo_to_graph(xyz, map: Basemap):
     return numpy.array(coords)
 
 
-filename = "California Gull.txt"
-data = []
+filename = "Lesser Black-backed Gull.txt"
+data = FileParser.get_birds(filename)
 
 auto_bounds = False
-lat_bounds = [35.75, 42.25]
-long_bounds = [-120.25, -113.75]
+# lat_bounds = [35.75, 42.25]
+lat_bounds = [38.3, 40.5]
+# long_bounds = [-120.25, -113.75]
+long_bounds = [-120.25, -119]
 
-with open(filename) as file:
-    for line in file:
-        line_arr = line.split("\t")
-        try:
-            time = datetime.strptime(line_arr[27] + " " + line_arr[28], '%Y-%m-%d %H:%M:%S')
-        except:
-            continue
-        order = float(line_arr[2])
-        count = line_arr[8]
-        latitude = line_arr[25]
-        longitude = line_arr[26]
-        distance = 0 if line_arr[35] == "" else float(line_arr[35])
-        try:
-            data.append(Entry(time, order, int(count), float(latitude), float(longitude), distance))
-        except:
-            print("Error on Entry: ", line)
-            continue
+SECONDS_IN_YR = 31536000
+SECONDS_IN_DAY = 86400
+MILES_IN_DEGREE = 68.7
+eps = 6
+time_to_space_ratios = 8
 
 points = []
 pltPoints = []
-SECONDS_IN_YR = 31536000
 for entry in data:
     time_of_year = entry.time - entry.time.replace(month=1, day=1, hour=0, minute=0, microsecond=0)
     # Interpolate the time value between min and max
-    time_val = lerp(0, 2, entry.time.timestamp() / SECONDS_IN_YR)
+    time_val = (entry.time.timestamp() / SECONDS_IN_DAY) / (time_to_space_ratios * eps) / MILES_IN_DEGREE
     if entry.time.year >= 2015:
         points.append([entry.latitude, entry.longitude, time_val])
         pltPoints.append([entry.latitude, entry.longitude, mdates.date2num(entry.time)])
         # print(time_of_year)
         # print(time_val)
 
-db = DBSCAN(eps=0.03, min_samples=10).fit(points)
+db = DBSCAN(eps = eps / MILES_IN_DEGREE, min_samples=1).fit(points)
 pred_y = db.fit_predict(points)
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
 core_samples_mask[db.core_sample_indices_] = True
@@ -135,7 +126,7 @@ for k, col in zip(unique_labels, colors):
     # print(xyz)
     if len(xyz) > 0:
         ax.plot(xyz[:, 0], xyz[:, 1], xyz[:, 2], 'o', markerfacecolor=tuple(col),
-                 markeredgecolor='k', markersize=3)
+                 markeredgecolor='k', markersize=6)
 
     xyz = points[class_member_mask & ~core_samples_mask]
     if len(xyz) > 0:
