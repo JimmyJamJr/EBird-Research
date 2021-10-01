@@ -19,9 +19,19 @@ class Entry:
     longitude: float
     distance: float
 
+def normalised_kendall_tau_distance(values1, values2):
+    """Compute the Kendall tau distance."""
+    n = len(values1)
+    assert len(values2) == n, "Both lists have to be of equal length"
+    i, j = np.meshgrid(np.arange(n), np.arange(n))
+    a = np.argsort(values1)
+    b = np.argsort(values2)
+    ndisordered = np.logical_or(np.logical_and(a[i] < a[j], b[i] > b[j]), np.logical_and(a[i] > a[j], b[i] < b[j])).sum()
+    return ndisordered / (n * (n - 1))
 
 line_chart = False
 grid = True
+distances = True
 
 
 SECONDS_IN_YR = 31536000
@@ -33,6 +43,7 @@ time_to_space_ratios = numpy.array([.25, .5, 1., 2., 4., 8., 16.])
 fig = plt.figure()
 
 ranking_dict = {}
+ranking_matrix = [[0 for x in range(len(time_to_space_ratios))] for y in range(len(eps_list))]
 for eps in eps_list:
     ranking_dict[eps] = {}
     for ratio in time_to_space_ratios:
@@ -65,9 +76,11 @@ for eps in eps_list:
 
             count_dict = dict(sorted(count_dict.items(), key=lambda x: x[1], reverse=True))
             # out_file.write("eps=" + str(eps) + " days/eps=" + str(ratio) + "\n\n")
+            ranks = ranking_matrix[np.where(eps_list == eps)[0][0]][np.where(time_to_space_ratios == ratio)[0][0]] = []
             for i in range(len(count_dict)):
                 item = list(count_dict.items())[i]
-                # out_file.write(str(i+1) + ". " + item[0] + " " + str(item[1]) + "\n")
+                ranks.append(item[0])
+            # out_file.write(str(i+1) + ". " + item[0] + " " + str(item[1]) + "\n")
 
                 if item[0] in ranking_dict[eps]:
                     ranking_dict[eps][item[0]].append(i+1)
@@ -134,6 +147,26 @@ if grid:
 
         # fig.tight_layout()
     fig.subplots_adjust(hspace=0.4)
+
+if distances:
+    ratio_matrix = np.zeros((len(ranking_matrix), len(ranking_matrix[0])))
+    eps_matrix = np.zeros((len(ranking_matrix), len(ranking_matrix[0])))
+
+    print("Ratio Differences Matrix:")
+    for r in range(len(ranking_matrix)):
+        for c in range(len(ranking_matrix[r])):
+            ratio_matrix[r][c] = 0 if c == 0 else normalised_kendall_tau_distance(ranking_matrix[r][c], ranking_matrix[r][c-1])
+    print(ratio_matrix)
+
+    print("\n\nEPS Differences Matrix:")
+    for r in range(len(ranking_matrix)):
+        for c in range(len(ranking_matrix[r])):
+            eps_matrix[r][c] = 0 if r == 0 else normalised_kendall_tau_distance(ranking_matrix[r][c], ranking_matrix[r-1][c])
+    print(eps_matrix)
+
+
+
+
 
 # fig.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
 plt.show()
