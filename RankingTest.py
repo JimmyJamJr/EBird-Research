@@ -4,6 +4,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy
 import numpy as np
+import math
 
 from sklearn.cluster import DBSCAN
 
@@ -19,6 +20,7 @@ class Entry:
     longitude: float
     distance: float
 
+
 def normalised_kendall_tau_distance(values1, values2):
     """Compute the Kendall tau distance."""
     n = len(values1)
@@ -31,14 +33,15 @@ def normalised_kendall_tau_distance(values1, values2):
 
 line_chart = False
 grid = True
-distances = True
+distances = False
+hood = False
 
 
 SECONDS_IN_YR = 31536000
 SECONDS_IN_DAY = 86400
 MILES_IN_DEGREE = 68.7
 eps_list = numpy.array([1., 2., 4., 8., 16., 32.])
-time_to_space_ratios = numpy.array([.25, .5, 1., 2., 4., 8., 16.])
+time_to_space_ratios = numpy.array([1., 2., 3., 4., 5., 6, 7., 8., 9., 10.])
 
 fig = plt.figure()
 
@@ -103,7 +106,7 @@ if line_chart:
         ax.set_xlabel('Days/EPS')
         ax.set_ylabel('Rank')
         ax.set_title("EPS = " + str(eps) + " Miles")
-        ax.legend(loc=2)
+        ax.legend(loc=1)
 
 test_epses = [1.0, 2.0, 4.0, 8.0]
 if grid:
@@ -141,7 +144,7 @@ if grid:
 
         for i in range(len(birds)):
             for j in range(len(birds)):
-                text = ax.text(j, i, matrix[i, j], ha="center", va="center", color="black")
+                text = ax.text(j, i, int(matrix[i, j]), ha="center", va="center", color="black")
 
         ax.set_title("Species Ranking vs Ranking (EPS = " + str(test_eps) + ", higher number = more rare)")
 
@@ -155,7 +158,8 @@ if distances:
     print("Ratio Differences Matrix:")
     for r in range(len(ranking_matrix)):
         for c in range(len(ranking_matrix[r])):
-            ratio_matrix[r][c] = 0 if c == 0 else normalised_kendall_tau_distance(ranking_matrix[r][c], ranking_matrix[r][c-1])
+            d = normalised_kendall_tau_distance(ranking_matrix[r][c], ranking_matrix[r][c-1])
+            ratio_matrix[r][c] = 0 if c == 0 else d
     print(ratio_matrix)
 
     print("\n\nEPS Differences Matrix:")
@@ -163,6 +167,43 @@ if distances:
         for c in range(len(ranking_matrix[r])):
             eps_matrix[r][c] = 0 if r == 0 else normalised_kendall_tau_distance(ranking_matrix[r][c], ranking_matrix[r-1][c])
     print(eps_matrix)
+
+if hood:
+    # FileParser.generate_dbscann_ranked_lists(["Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe"], np.array([1., 2., 4., 8., 16., 32.]), np.array([1., 2., 3., 4., 5., 6, 7., 8., 9., 10.]))
+    ranking_dict = FileParser.get_ranked_lists_from_file()
+    matrix = []
+    eps_checked = []
+    for coords, ranks in ranking_dict.items():
+        ratio_checked = []
+        if not coords[0] in eps_checked:
+            eps_checked.append(coords[0])
+            matrix.append([])
+        if not coords[1] in ratio_checked:
+            ratio_checked.append(coords[1])
+            matrix[eps_checked.index(coords[0])].append(ranks)
+
+    for eps in matrix:
+        print(eps)
+
+    in_range_coords = []
+    diff_matrix = np.full_like(matrix, 0)
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            max_diff = 0
+            for i1 in range(i-2, i+3, 1):
+                if i >= 0 and i < len(matrix):
+                    for j1 in range(j-2, j+3, 1):
+                        if j1 >= 0 and j1 < len(matrix[i]):
+                            if math.dist([i, j], [i1, j1]) < 2:
+                                diff = normalised_kendall_tau_distance(matrix[i][j], matrix[i1][j1])
+                                max_diff = diff if diff > max_diff else max_diff
+            diff_matrix[i][j] = max_diff
+
+    for eps in diff_matrix:
+        print(eps)
+
+
+
 
 
 
