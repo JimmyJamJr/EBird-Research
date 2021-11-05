@@ -43,8 +43,8 @@ if input("Regnerate Ranks? ") == "y":
 
 unclustered_ranks = []
 if graph_option == 2:
+    unclustered_ranks = FileParser.get_unclustered_ranks(species)
     print("Unclustered: ", unclustered_ranks)
-unclustered_ranks = FileParser.get_unclustered_ranks(species)
 most_common_ranks = []
 if graph_option == 3:
     most_common_ranks = FileParser.find_most_common_ranking()
@@ -63,7 +63,7 @@ for coords, ranks in ranking_dict.items():
         matrix[eps_checked.index(coords[0])].append(ranks)
 
 matrix = np.array(matrix)
-print(matrix)
+# print(matrix)
 
 in_range_coords = []
 diff_matrix = np.zeros((len(matrix), len(matrix[0])))
@@ -84,7 +84,7 @@ for i in range(len(matrix)):
         elif (graph_option == 3):
             diff_matrix[i][j] = kendall_tau_distance(matrix[i][j], most_common_ranks)
 
-print(diff_matrix)
+# print(diff_matrix)
 
 fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
@@ -96,8 +96,8 @@ for i in range(len(diff_matrix.T)):
 
 ax.set_xticks(np.arange(len(eps_list)))
 ax.set_yticks(np.arange(len(ratio_list)))
-print(eps_list)
-print(ratio_list)
+# print(eps_list)
+# print(ratio_list)
 ax.set_xticklabels(eps_list)
 ax.set_yticklabels(ratio_list)
 ax.set_xlabel('EPS')
