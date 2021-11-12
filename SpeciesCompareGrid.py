@@ -19,8 +19,8 @@ def kendall_tau_distance(values1, values2):
     return ndisordered
 
 
-species1 = "Sabines Gull"
-species2 = "Lesser Black-backed Gull"
+# species1 = "Sabines Gull"
+# species2 = "Lesser Black-backed Gull"
 
 eps_list = np.linspace(.25, 15, 60)
 ratio_list = np.linspace(.25, 15, 60)
@@ -32,38 +32,45 @@ if input("Regnerate Ranks? ") == "y":
     print("Regenerating rank files...")
     FileParser.generate_dbscann_ranked_lists(species, eps_list, ratio_list)
 
-ranking_dict = FileParser.get_ranked_lists_from_file()
-matrix = []
-eps_checked = []
-for coords, ranks in ranking_dict.items():
-    ratio_checked = []
-    if not coords[0] in eps_checked:
-        eps_checked.append(coords[0])
-        matrix.append([])
-    if not coords[1] in ratio_checked:
-        ratio_checked.append(coords[1])
-        matrix[eps_checked.index(coords[0])].append(ranks)
+for speciesA in species:
+    for speciesB in species:
+        if speciesA == speciesB: continue
 
-matrix = np.array(matrix)
+        ranking_dict = FileParser.get_ranked_lists_from_file()
+        matrix = []
+        eps_checked = []
+        for coords, ranks in ranking_dict.items():
+            ratio_checked = []
+            if not coords[0] in eps_checked:
+                eps_checked.append(coords[0])
+                matrix.append([])
+            if not coords[1] in ratio_checked:
+                ratio_checked.append(coords[1])
+                matrix[eps_checked.index(coords[0])].append(ranks)
 
-diff_matrix = np.zeros((len(matrix), len(matrix[0])))
-for i in range(len(matrix)):
-    for j in range(len(matrix[i])):
-        if np.where(matrix[i][j] == species1) > np.where(matrix[i][j] == species2):
-            diff_matrix[i][j] = 1
-        else:
-            diff_matrix[i][j] = 0
+        matrix = np.array(matrix)
 
-fig = plt.figure()
-ax = fig.add_subplot(1, 1, 1)
-im = ax.imshow(diff_matrix.T, cmap="cividis", interpolation="none", origin='lower')
+        diff_matrix = np.zeros((len(matrix), len(matrix[0])))
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if np.where(matrix[i][j] == speciesA) > np.where(matrix[i][j] == speciesB):
+                    diff_matrix[i][j] = 1
+                else:
+                    diff_matrix[i][j] = 0
 
-ax.set_xticks(np.arange(len(eps_list)))
-ax.set_yticks(np.arange(len(ratio_list)))
-ax.set_xticklabels(eps_list, fontsize=6, rotation=45)
-ax.set_yticklabels(ratio_list, fontsize=6)
-ax.set_xlabel('EPS')
-ax.set_ylabel('Days/EPS')
-ax.set_title("{} vs {} ranking (Yellow means more rare)".format(species1, species2))
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
+        im = ax.imshow(diff_matrix.T, cmap="cividis", interpolation="none", origin='lower')
 
-plt.show()
+        ax.set_xticks(np.arange(len(eps_list)))
+        ax.set_yticks(np.arange(len(ratio_list)))
+        ax.set_xticklabels(eps_list, fontsize=6, rotation=45)
+        ax.set_yticklabels(ratio_list, fontsize=6)
+        ax.set_xlabel('EPS')
+        ax.set_ylabel('Days/EPS')
+        ax.set_title("{} vs {} ranking (Yellow means more rare)".format(speciesA, speciesB))
+
+        if not os.path.isdir("species_compare_graphs/{}".format(speciesA)):
+            os.mkdir("species_compare_graphs/{}".format(speciesA))
+        plt.savefig("species_compare_graphs/{}/{} vs {}.png".format(speciesA, speciesA, speciesB))
+        plt.close()
