@@ -7,6 +7,48 @@ import numpy as np
 import math
 import FileParser
 
+eps_list = np.linspace(.25, 15, 60)
+ratio_list = np.linspace(.25, 15, 60)
+neighborhood_size = 5
+species = [
+    "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
+]
+
+
+def print_ranking(ranking):
+    for i in range(len(ranking)):
+        print((i + 1), ". ", ranking[i])
+
+
+def species_matrix_diff(ranking1, ranking2):
+    mat_1 = numpy.zeros((len(species), len(species)), dtype=bool)
+    mat_2 = numpy.zeros((len(species), len(species)), dtype=bool)
+
+    # print("Ranking1:")
+    # print_ranking(ranking1)
+    # print("Ranking2:")
+    # print_ranking(ranking2)
+
+    diff_count = 0
+
+    for i in range(len(species)):
+        for j in range(i+1, len(species)):
+            if np.where(ranking1 == species[i]) > np.where(ranking1 == species[j]):
+                mat_1[i][j] = True
+            if np.where(ranking2 == species[i]) > np.where(ranking2 == species[j]):
+                mat_2[i][j] = True
+
+            if mat_1[i][j] != mat_2[i][j]:
+                diff_count += 1
+
+    # for i in range(len(mat_1)):
+    #     for j in range(len(mat_1[i])):
+    #         if mat_1[i][j] != mat_2[i][j]:
+    #             diff_count += 1
+    # print(diff_count)
+    return diff_count
+
+
 def normalised_kendall_tau_distance(values1, values2):
     """Compute the Kendall tau distance."""
     n = len(values1)
@@ -29,13 +71,6 @@ def kendall_tau_distance(values1, values2):
     return ndisordered
 
 graph_option = int(input("What kind of graph? "))
-
-eps_list = np.linspace(.25, 15, 60)
-ratio_list = np.linspace(.25, 15, 60)
-neighborhood_size = 5
-species = [
-    "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
-]
 
 if input("Regnerate Ranks? ") == "y":
     print("Regenerating rank files...")
@@ -65,18 +100,23 @@ for coords, ranks in ranking_dict.items():
 matrix = np.array(matrix)
 # print(matrix)
 
+# species_matrix_diff(matrix[1][1], matrix[26][29])
+
 in_range_coords = []
 diff_matrix = np.zeros((len(matrix), len(matrix[0])))
 for i in range(len(matrix)):
     for j in range(len(matrix[i])):
-        if (graph_option == 1):
+        if (graph_option == 1 or graph_option == 4):
             max_diff = 0
             for i1 in range(i-2, i+3, 1):
                 if i1 >= 0 and i1 < len(matrix):
                     for j1 in range(j-2, j+3, 1):
                         if j1 >= 0 and j1 < len(matrix[i]):
                             if math.dist([eps_list[i], ratio_list[j]], [eps_list[i1], ratio_list[j1]]) < neighborhood_size:
-                                diff = kendall_tau_distance(matrix[i][j], matrix[i1][j1])
+                                if graph_option == 4:
+                                    diff = species_matrix_diff(matrix[i][j], matrix[i1][j1])
+                                else:
+                                    diff = kendall_tau_distance(matrix[i][j], matrix[i1][j1])
                                 max_diff = diff if diff > max_diff else max_diff
             diff_matrix[i][j] = max_diff
         elif (graph_option == 2):
@@ -110,5 +150,7 @@ elif graph_option == 2:
     ax.set_title("VS Unclustered Ranking Diff")
 elif graph_option == 3:
     ax.set_title("VS Most Common Ranking Diff\n" + str(most_common_ranks))
+elif graph_option == 4:
+    ax.set_title("Max Neighborhood Diff (Neighborhood Radius: " + str(neighborhood_size) + " ) using custom pairwise matrix difference")
 
 plt.show()
