@@ -1,0 +1,18 @@
+RowMoreCommonVal1,Acorn Woodpecker,Brown Thrasher,Eastern Phoebe,Gray Catbird,Groove-billed Ani,Huttons Vireo,Lark Bunting,Lesser Black-backed Gull,Long-tailed Duck,Long-tailed Jaeger,Mew Gull,Parasitic Jaeger,Pomarine Jaeger,Red Phalarope,Red-faced Warbler,Ruff,Sabines Gull
+Acorn Woodpecker,,0,1,-1,1,1,1,-1,-1,1,-1,-1,1,-1,1,1,-1
+Brown Thrasher,,,1,-1,1,1,1,-1,-1,1,1,1,1,1,1,1,-1
+Eastern Phoebe,,,,-1,1,1,1,-1,-1,1,-1,-1,1,0,1,1,-1
+Gray Catbird,,,,,1,1,1,-1,0,1,1,1,1,1,1,1,0
+Groove-billed Ani,,,,,,1,-1,-1,-1,-1,-1,-1,1,-1,1,-1,-1
+Huttons Vireo,,,,,,,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1
+Lark Bunting,,,,,,,,-1,-1,1,1,1,1,0,1,1,-1
+Lesser Black-backed Gull,,,,,,,,,1,1,1,1,1,1,1,1,1
+Long-tailed Duck,,,,,,,,,,1,1,1,1,1,1,1,0
+Long-tailed Jaeger,,,,,,,,,,,-1,-1,1,-1,1,1,-1
+Mew Gull,,,,,,,,,,,,0,1,0,1,1,0
+Parasitic Jaeger,,,,,,,,,,,,,1,-1,1,1,-1
+Pomarine Jaeger,,,,,,,,,,,,,,-1,0,-1,-1
+Red Phalarope,,,,,,,,,,,,,,,1,1,0
+Red-faced Warbler,,,,,,,,,,,,,,,,-1,-1
+Ruff,,,,,,,,,,,,,,,,,-1
+Sabines Gull,,,,,,,,,,,,,,,,,

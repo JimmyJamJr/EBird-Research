@@ -8,6 +8,8 @@ import os
 
 from sklearn.cluster import DBSCAN
 
+import EBirdUtil
+
 @dataclass
 class Entry:
     time: datetime
@@ -20,7 +22,7 @@ class Entry:
 
 def get_birds(filename):
     data = []
-    with open(filename) as file:
+    with open("birds/" + filename) as file:
         for line in file:
             line_arr = line.split("\t")
             if line_arr[28] == "":
@@ -50,7 +52,7 @@ def get_unclustered_ranks(species):
     ranking = []
     for bird in species:
         bird_count = 0
-        data = get_birds("birds/" + bird + ".txt")
+        data = get_birds(bird + ".txt")
         for entry in data:
             bird_count += 1
         count_dict[bird] = bird_count
@@ -71,17 +73,26 @@ def generate_dbscann_ranked_lists(species, eps_list, ratio_list):
                       "w+") as out_file:
                 count_dict = {}
                 for bird in species:
-                    data = get_birds("birds/" + bird + ".txt")
+                    data = get_birds(bird + ".txt")
 
                     points = []
                     for entry in data:
-                        time_val = (entry.time.timestamp() / SECONDS_IN_DAY) / (ratio * eps) / MILES_IN_DEGREE
-                        points.append([entry.latitude, entry.longitude, time_val])
+                        # Days since 1970
+                        time_val = entry.time.timestamp() / SECONDS_IN_DAY
+                        # Days/mile
+                        days_per_miles = ratio / eps
+                        # Time Val measured in miles
+                        time_val = time_val / days_per_miles
 
+                        # Get distance of lat, long point in miles from 0,0 (for more accurate distance clustering)
+                        lat_dist = EBirdUtil.geo_distance(entry.latitude, entry.longitude, 0, entry.latitude)
+                        lon_dist = EBirdUtil.geo_distance(entry.latitude, entry.longitude, entry.latitude, 0)
+
+                        points.append([lat_dist, lon_dist, time_val])
                     if len(points) == 0:
                         continue
 
-                    db = DBSCAN(eps=eps / MILES_IN_DEGREE, min_samples=1).fit(points)
+                    db = DBSCAN(eps=eps, min_samples=1).fit(points)
                     core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
                     core_samples_mask[db.core_sample_indices_] = True
                     labels = db.labels_
@@ -173,8 +184,3 @@ def find_most_common_ranking():
             max = freq
             most_common = ranking
     return list(most_common)
-
-
-
-# generate_dbscann_ranked_lists(["Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe"], np.array([1., 2., 4., 8., 16., 32.]), np.array([1., 2., 3., 4., 5., 6, 7., 8., 9., 10.]))
-# get_ranked_lists_from_file()

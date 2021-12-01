@@ -1,0 +1,19 @@
+eps=0.5 days/eps=9.5
+
+1. Lesser Black-backed Gull 170
+2. Gray Catbird 163
+3. Mew Gull 110
+4. Sabines Gull 103
+5. Long-tailed Duck 101
+6. Brown Thrasher 81
+7. Acorn Woodpecker 79
+8. Lark Bunting 53
+9. Eastern Phoebe 52
+10. Parasitic Jaeger 38
+11. Red Phalarope 30
+12. Long-tailed Jaeger 23
+13. Groove-billed Ani 16
+14. Red-faced Warbler 9
+15. Ruff 7
+16. Huttons Vireo 2
+17. Pomarine Jaeger 1

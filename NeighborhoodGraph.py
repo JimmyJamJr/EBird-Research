@@ -145,11 +145,11 @@ ax.set_ylabel('Days/EPS')
 
 plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 if graph_option == 1:
-    ax.set_title("Max Neighborhood Diff (Neighborhood Radius: " + str(neighborhood_size) + " )")
+    ax.set_title("Max pairwise difference in " + str(neighborhood_size) + " eps/ratio radius circle")
 elif graph_option == 2:
-    ax.set_title("VS Unclustered Ranking Diff")
+    ax.set_title("Pairwise difference vs unclustered rank")
 elif graph_option == 3:
-    ax.set_title("VS Most Common Ranking Diff\n" + str(most_common_ranks))
+    ax.set_title("Pairwise difference vs most common rank\n" + str(most_common_ranks))
 elif graph_option == 4:
     ax.set_title("Max Neighborhood Diff (Neighborhood Radius: " + str(neighborhood_size) + " ) using custom pairwise matrix difference")
 
