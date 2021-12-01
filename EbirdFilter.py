@@ -1,3 +1,6 @@
+# This script takes the main NV data file and split it into files for
+# individual birds
+
 import os
 
 

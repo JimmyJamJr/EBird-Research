@@ -10,6 +10,8 @@ from mpl_toolkits.basemap import Basemap
 from matplotlib.collections import PolyCollection
 from datetime import timezone
 
+from math import radians, cos, sin, asin, sqrt
+
 
 from sklearn.cluster import DBSCAN
 
@@ -39,6 +41,29 @@ def geo_to_graph(xyz, map: Basemap):
     return numpy.array(coords)
 
 
+def geo_distance(lat1, lon1, lat2, lon2):
+
+    # The math module contains a function named
+    # radians which converts from degrees to radians.
+    lon1 = radians(lon1)
+    lon2 = radians(lon2)
+    lat1 = radians(lat1)
+    lat2 = radians(lat2)
+
+    # Haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+
+    c = 2 * asin(sqrt(a))
+
+    # Radius of earth in miles
+    r = 3956
+
+    # calculate the result
+    return(c * r)
+
+
 filename = "Lesser Black-backed Gull.txt"
 data = FileParser.get_birds(filename)
 
@@ -51,22 +76,32 @@ long_bounds = [-120.25, -119]
 SECONDS_IN_YR = 31536000
 SECONDS_IN_DAY = 86400
 MILES_IN_DEGREE = 68.7
-eps = 6
-time_to_space_ratios = 8
+eps = 10
+time_to_space_ratios = 10
 
 points = []
 pltPoints = []
 for entry in data:
     time_of_year = entry.time - entry.time.replace(month=1, day=1, hour=0, minute=0, microsecond=0)
-    # Interpolate the time value between min and max
-    time_val = (entry.time.timestamp() / SECONDS_IN_DAY) / (time_to_space_ratios * eps) / MILES_IN_DEGREE
+
+    # Days since 1970
+    time_val = entry.time.timestamp() / SECONDS_IN_DAY
+    # Days/mile
+    days_per_miles = time_to_space_ratios / eps
+    # Time Val measured in miles
+    time_val = time_val / days_per_miles
+
+    # Get distance of lat, long point in miles from 0,0 (for more accurate distance clustering)
+    lat_dist = geo_distance(entry.latitude, entry.longitude, 0, entry.latitude)
+    lon_dist = geo_distance(entry.latitude, entry.longitude, entry.latitude, 0)
+
     if entry.time.year >= 2015:
-        points.append([entry.latitude, entry.longitude, time_val])
+        points.append([lat_dist, lon_dist, time_val])
         pltPoints.append([entry.latitude, entry.longitude, mdates.date2num(entry.time)])
         # print(time_of_year)
         # print(time_val)
 
-db = DBSCAN(eps = eps / MILES_IN_DEGREE, min_samples=1).fit(points)
+db = DBSCAN(eps=eps, min_samples=1).fit(points)
 pred_y = db.fit_predict(points)
 core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
 core_samples_mask[db.core_sample_indices_] = True

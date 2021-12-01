@@ -1,3 +1,6 @@
+# This script is responsible for generating the ranking files given a list of species,
+# eps and ratio lists
+
 from dataclasses import dataclass
 from datetime import datetime
 import numpy as np
