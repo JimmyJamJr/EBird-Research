@@ -22,8 +22,8 @@ def kendall_tau_distance(values1, values2):
 # species1 = "Sabines Gull"
 # species2 = "Lesser Black-backed Gull"
 
-eps_list = np.linspace(.25, 15, 60)
-ratio_list = np.linspace(.25, 15, 60)
+eps_list = np.linspace(.25, 30, 120)
+ratio_list = np.linspace(.25, 30, 120)
 species = [
     "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
 ]
@@ -32,11 +32,11 @@ if input("Regnerate Ranks? ") == "y":
     print("Regenerating rank files...")
     FileParser.generate_dbscann_ranked_lists(species, eps_list, ratio_list)
 
+ranking_dict = FileParser.get_ranked_lists_from_file()
+
 for speciesA in species:
     for speciesB in species:
         if speciesA == speciesB: continue
-
-        ranking_dict = FileParser.get_ranked_lists_from_file()
         matrix = []
         eps_checked = []
         for coords, ranks in ranking_dict.items():
