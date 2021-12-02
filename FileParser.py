@@ -51,11 +51,13 @@ def get_unclustered_ranks(species):
     count_dict = {}
     ranking = []
     for bird in species:
-        bird_count = 0
+        checklist_count = 0
+        observation_count = 0
         data = get_birds(bird + ".txt")
         for entry in data:
-            bird_count += 1
-        count_dict[bird] = bird_count
+            checklist_count += 1
+            observation_count += entry.count
+        count_dict[bird] = (checklist_count, observation_count)
     count_dict = dict(sorted(count_dict.items(), key=lambda x: x[1], reverse=True))
     for bird in count_dict.keys():
         ranking.append(bird)
@@ -76,6 +78,8 @@ def generate_dbscann_ranked_lists(species, eps_list, ratio_list):
                     data = get_birds(bird + ".txt")
 
                     points = []
+                    # Total of observations in checklist
+                    total_count = 0
                     for entry in data:
                         # Days since 1970
                         time_val = entry.time.timestamp() / SECONDS_IN_DAY
@@ -83,6 +87,9 @@ def generate_dbscann_ranked_lists(species, eps_list, ratio_list):
                         days_per_miles = ratio / eps
                         # Time Val measured in miles
                         time_val = time_val / days_per_miles
+
+                        # Add checklist count to total count
+                        total_count += entry.count
 
                         # Get distance of lat, long point in miles from 0,0 (for more accurate distance clustering)
                         lat_dist = EBirdUtil.geo_distance(entry.latitude, entry.longitude, 0, entry.latitude)
@@ -99,7 +106,8 @@ def generate_dbscann_ranked_lists(species, eps_list, ratio_list):
 
                     n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
 
-                    count_dict[bird] = n_clusters
+                    # Store number of clusters and total number of observations (tie breaker)
+                    count_dict[bird] = (n_clusters, total_count)
 
                 count_dict = dict(sorted(count_dict.items(), key=lambda x: x[1], reverse=True))
                 out_file.write("eps=" + str(eps) + " days/eps=" + str(ratio) + "\n\n")
@@ -132,9 +140,9 @@ def get_ranked_lists_from_file():
                     continue
 
                 line_arr = line.split(' ')
-                for i in range(1, len(line_arr) - 1):
+                for i in range(1, len(line_arr) - 2):
                     species_name += line_arr[i]
-                    if i != len(line_arr) - 2:
+                    if i != len(line_arr) - 3:
                         species_name += " "
 
                 ranking.append(species_name)
@@ -143,6 +151,7 @@ def get_ranked_lists_from_file():
     # print(rank_dict)
     # print("Files: ", file_count)
     return rank_dict
+
 
 def find_most_common_ranking():
     ranking_frequency = {}
@@ -163,9 +172,9 @@ def find_most_common_ranking():
                     continue
 
                 line_arr = line.split(' ')
-                for i in range(1, len(line_arr) - 1):
+                for i in range(1, len(line_arr) - 2):
                     species_name += line_arr[i]
-                    if i != len(line_arr) - 2:
+                    if i != len(line_arr) - 3:
                         species_name += " "
 
                 ranking.append(species_name)

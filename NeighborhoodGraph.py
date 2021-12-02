@@ -7,8 +7,8 @@ import numpy as np
 import math
 import FileParser
 
-eps_list = np.linspace(.25, 15, 60)
-ratio_list = np.linspace(.25, 15, 60)
+eps_list = np.linspace(.5, 30, 60)
+ratio_list = np.linspace(.5, 30, 60)
 neighborhood_size = 5
 species = [
     "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
