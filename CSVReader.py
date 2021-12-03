@@ -42,8 +42,8 @@ for i in range(len(csv_matrix)):
         else:
             continue
 
-eps_list = np.linspace(.5, 15, 30)
-ratio_list = np.linspace(.5, 15, 30)
+eps_list = np.linspace(.5, 30, 60)
+ratio_list = np.linspace(.5, 30, 60)
 species2 = [
     "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
 ]
@@ -95,6 +95,7 @@ for i in range(len(matrix)):
         diff_matrix[i][j] = diff_to_csv(matrix[i][j])
 
 fig = plt.figure()
+fig.set_size_inches(12, 12)
 ax = fig.add_subplot(1, 1, 1)
 im = ax.imshow(diff_matrix.T, cmap="Blues", interpolation="none", origin='lower')
 
@@ -112,7 +113,5 @@ ax.set_xlabel('EPS')
 ax.set_ylabel('Days/EPS')
 plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 ax.set_title("Difference to Hurtado Ranking")
+plt.savefig("ComparisonVsHurtadoRanking.png", dpi=100)
 plt.show()
-
-unclustered_ranks = FileParser.get_unclustered_ranks(species)
-print(unclustered_ranks)

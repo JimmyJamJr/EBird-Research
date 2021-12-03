@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 import os
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import numpy
 import numpy as np
 import math
@@ -33,20 +34,28 @@ if input("Regnerate Ranks? ") == "y":
     FileParser.generate_dbscann_ranked_lists(species, eps_list, ratio_list)
 
 ranking_dict = FileParser.get_ranked_lists_from_file()
+unclustered = FileParser.get_unclustered_ranks(species)
 
 for speciesA in species:
     for speciesB in species:
         if speciesA == speciesB: continue
+
+        if np.where(unclustered == speciesA) > np.where(unclustered == speciesB):
+            rarer_unclustered = speciesA
+        else:
+            rarer_unclustered = speciesB
+
         matrix = []
         eps_checked = []
         for coords, ranks in ranking_dict.items():
-            ratio_checked = []
+            print(coords)
             if not coords[0] in eps_checked:
                 eps_checked.append(coords[0])
                 matrix.append([])
-            if not coords[1] in ratio_checked:
-                ratio_checked.append(coords[1])
-                matrix[eps_checked.index(coords[0])].append(ranks)
+            #     ratio_checked = []
+            # if not coords[1] in ratio_checked:
+            #     ratio_checked.append(coords[1])
+            matrix[eps_checked.index(coords[0])].append(ranks)
 
         matrix = np.array(matrix)
 
@@ -59,6 +68,7 @@ for speciesA in species:
                     diff_matrix[i][j] = 0
 
         fig = plt.figure()
+        fig.set_size_inches(12, 12)
         ax = fig.add_subplot(1, 1, 1)
         im = ax.imshow(diff_matrix.T, cmap="cividis", interpolation="none", origin='lower')
 
@@ -68,9 +78,13 @@ for speciesA in species:
         ax.set_yticklabels(ratio_list, fontsize=6)
         ax.set_xlabel('EPS')
         ax.set_ylabel('Days/EPS')
-        ax.set_title("{} vs {} ranking (Yellow means more rare)".format(speciesA, speciesB))
+        ax.set_title("{} vs {} ranking\n{} is more rare in unclustered rank".format(speciesA, speciesB, rarer_unclustered))
+        yellow_patch = mpatches.Patch(color='yellow', label='{} is more rare'.format(speciesA))
+        blue_patch = mpatches.Patch(color='blue', label='{} is more rare'.format(speciesB))
+        plt.legend(handles=[yellow_patch, blue_patch], bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
 
         if not os.path.isdir("species_compare_graphs/{}".format(speciesA)):
             os.mkdir("species_compare_graphs/{}".format(speciesA))
-        plt.savefig("species_compare_graphs/{}/{} vs {}.png".format(speciesA, speciesA, speciesB))
+
+        plt.savefig("species_compare_graphs/{}/{} vs {}.png".format(speciesA, speciesA, speciesB), dpi=100)
         plt.close()

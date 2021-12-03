@@ -127,6 +127,7 @@ for i in range(len(matrix)):
 # print(diff_matrix)
 
 fig = plt.figure()
+fig.set_size_inches(12, 12)
 ax = fig.add_subplot(1, 1, 1)
 im = ax.imshow(diff_matrix.T, cmap="Blues", interpolation="none", origin='lower')
 
@@ -149,8 +150,10 @@ if graph_option == 1:
 elif graph_option == 2:
     ax.set_title("Pairwise difference vs unclustered rank")
 elif graph_option == 3:
-    ax.set_title("Pairwise difference vs most common rank\n" + str(most_common_ranks))
+    ax.set_title("Pairwise difference vs most common rank:\n" + str(most_common_ranks))
+    ax.title.set_fontsize(6)
 elif graph_option == 4:
     ax.set_title("Max Neighborhood Diff (Neighborhood Radius: " + str(neighborhood_size) + " ) using custom pairwise matrix difference")
 
+plt.savefig("ComparisonVsMostCommon.png", dpi=100)
 plt.show()
