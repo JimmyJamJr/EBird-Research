@@ -20,9 +20,6 @@ def kendall_tau_distance(values1, values2):
     return ndisordered
 
 
-# species1 = "Sabines Gull"
-# species2 = "Lesser Black-backed Gull"
-
 eps_list = np.linspace(.25, 30, 120)
 ratio_list = np.linspace(.25, 30, 120)
 species = [
@@ -34,13 +31,15 @@ if input("Regnerate Ranks? ") == "y":
     FileParser.generate_dbscann_ranked_lists(species, eps_list, ratio_list)
 
 ranking_dict = FileParser.get_ranked_lists_from_file()
-unclustered = FileParser.get_unclustered_ranks(species)
+unclustered = list(FileParser.get_unclustered_ranks(species))
+print(unclustered)
+rarer_unclustered = ""
 
 for speciesA in species:
     for speciesB in species:
         if speciesA == speciesB: continue
 
-        if np.where(unclustered == speciesA) > np.where(unclustered == speciesB):
+        if unclustered.index(speciesA) > unclustered.index(speciesB):
             rarer_unclustered = speciesA
         else:
             rarer_unclustered = speciesB
@@ -48,7 +47,6 @@ for speciesA in species:
         matrix = []
         eps_checked = []
         for coords, ranks in ranking_dict.items():
-            print(coords)
             if not coords[0] in eps_checked:
                 eps_checked.append(coords[0])
                 matrix.append([])
@@ -62,7 +60,7 @@ for speciesA in species:
         diff_matrix = np.zeros((len(matrix), len(matrix[0])))
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
-                if np.where(matrix[i][j] == speciesA) > np.where(matrix[i][j] == speciesB):
+                if np.where(matrix[i][j] == speciesA)[0][0] > np.where(matrix[i][j] == speciesB)[0][0]:
                     diff_matrix[i][j] = 1
                 else:
                     diff_matrix[i][j] = 0
@@ -70,7 +68,7 @@ for speciesA in species:
         fig = plt.figure()
         fig.set_size_inches(12, 12)
         ax = fig.add_subplot(1, 1, 1)
-        im = ax.imshow(diff_matrix.T, cmap="cividis", interpolation="none", origin='lower')
+        im = ax.imshow(diff_matrix.T, cmap="cividis", interpolation="none", origin='lower', vmin=0, vmax=1)
 
         ax.set_xticks(np.arange(len(eps_list)))
         ax.set_yticks(np.arange(len(ratio_list)))
@@ -78,10 +76,17 @@ for speciesA in species:
         ax.set_yticklabels(ratio_list, fontsize=6)
         ax.set_xlabel('EPS')
         ax.set_ylabel('Days/EPS')
-        ax.set_title("{} vs {} ranking\n{} is more rare in unclustered rank".format(speciesA, speciesB, rarer_unclustered))
+
+        plt.suptitle("{} vs {} Rarity".format(speciesA, speciesB), y=0.99, fontsize=18)
+        plt.title("{} is more rare when unclustered".format(rarer_unclustered), fontsize=10)
+
+
         yellow_patch = mpatches.Patch(color='yellow', label='{} is more rare'.format(speciesA))
         blue_patch = mpatches.Patch(color='blue', label='{} is more rare'.format(speciesB))
         plt.legend(handles=[yellow_patch, blue_patch], bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
+        plt.setp(ax.get_xticklabels()[1::2], visible=False)
+        plt.setp(ax.get_yticklabels()[1::2], visible=False)
+        fig.tight_layout()
 
         if not os.path.isdir("species_compare_graphs/{}".format(speciesA)):
             os.mkdir("species_compare_graphs/{}".format(speciesA))
