@@ -10,37 +10,6 @@ from sklearn.cluster import DBSCAN
 
 import EBirdUtil
 
-@dataclass
-class Entry:
-    time: datetime
-    order: float
-    count: int
-    latitude: float
-    longitude: float
-    distance: float
-
-
-def get_birds(filename):
-    data = []
-    with open("birds/" + filename) as file:
-        for line in file:
-            line_arr = line.split("\t")
-            if line_arr[28] == "":
-                time = datetime.strptime(line_arr[27], "%Y-%m-%d")
-            else:
-                time = datetime.strptime(line_arr[27] + " " + line_arr[28], '%Y-%m-%d %H:%M:%S')
-
-            order = float(line_arr[2])
-            count = 1 if line_arr[8] == "X" else line_arr[8]
-            latitude = line_arr[25]
-            longitude = line_arr[26]
-            distance = 0 if line_arr[35] == "" else float(line_arr[35])
-            # print("order: ", order, "count: ", count, "lat: ", latitude, "long: ", longitude, "distance: ", distance, "time: ", time)
-
-            data.append(Entry(time, order, int(count), float(latitude), float(longitude), distance))
-
-    return data
-
 
 SECONDS_IN_YR = 31536000
 SECONDS_IN_DAY = 86400
@@ -53,7 +22,7 @@ def get_unclustered_ranks(species):
     for bird in species:
         checklist_count = 0
         observation_count = 0
-        data = get_birds(bird + ".txt")
+        data = EBirdUtil.get_species_obs(bird)
         for entry in data:
             checklist_count += 1
             observation_count += entry.count
@@ -75,7 +44,7 @@ def generate_dbscann_ranked_lists(species, eps_list, ratio_list):
                       "w+") as out_file:
                 count_dict = {}
                 for bird in species:
-                    data = get_birds(bird + ".txt")
+                    data = EBirdUtil.get_species_obs(bird)
 
                     points = []
                     # Total of observations in checklist

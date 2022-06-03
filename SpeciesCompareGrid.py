@@ -72,18 +72,18 @@ for speciesA in species:
 
         ax.set_xticks(np.arange(len(eps_list)))
         ax.set_yticks(np.arange(len(ratio_list)))
-        ax.set_xticklabels(eps_list, fontsize=6, rotation=45)
-        ax.set_yticklabels(ratio_list, fontsize=6)
-        ax.set_xlabel('EPS')
-        ax.set_ylabel('Days/EPS')
+        ax.set_xticklabels(eps_list, fontsize=8, rotation=45)
+        ax.set_yticklabels(ratio_list, fontsize=8)
+        ax.set_xlabel('eps (miles)', fontsize=16)
+        ax.set_ylabel('teps (days)', fontsize=16)
 
-        plt.suptitle("{} vs {} Rarity".format(speciesA, speciesB), y=0.99, fontsize=18)
-        plt.title("{} is more rare when unclustered".format(rarer_unclustered), fontsize=10)
+        plt.suptitle("{} vs {} Rarity".format(speciesA, speciesB), y=0.99, fontsize=24)
+        plt.title("{} is more rare when unclustered".format(rarer_unclustered), fontsize=16)
 
 
         yellow_patch = mpatches.Patch(color='yellow', label='{} is more rare'.format(speciesA))
         blue_patch = mpatches.Patch(color='blue', label='{} is more rare'.format(speciesB))
-        plt.legend(handles=[yellow_patch, blue_patch], bbox_to_anchor=(0, 1), loc='upper left', ncol=1)
+        plt.legend(handles=[yellow_patch, blue_patch], bbox_to_anchor=(0, 1), loc='upper left', ncol=1, fontsize=16)
         plt.setp(ax.get_xticklabels()[1::2], visible=False)
         plt.setp(ax.get_yticklabels()[1::2], visible=False)
         fig.tight_layout()
