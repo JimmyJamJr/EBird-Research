@@ -222,22 +222,96 @@ def get_dbscan_ranking(species_list, eps, teps):
 
 
 # Given a list of species, eps, and teps, generate ranked lists for all parameter combos and save them to file
-def generate_ranking_files(species_list, eps_list, teps_list, save_dir="ranking_test/results/"):
+def generate_ranking_files(species_list, eps_list, teps_list, save_dir="ranks/"):
     # Delete exising ranking files
-    for f in os.listdir("ranking_test/results/"):
+    for f in os.listdir(save_dir):
         if f.endswith("txt"):
-            os.remove("ranking_test/results/" + f)
+            os.remove(save_dir + f)
 
     # Iterate through parameter space, get the ranking at each point, then write to file
     for eps in eps_list:
         for teps in teps_list:
             ranking = get_dbscan_ranking(species_list, eps, teps)
-            with open("ranking_test/results/" + str(round(eps, 1)) + "_" + str(round(teps, 1)) + ".txt",
+            with open(save_dir + str(round(eps, 1)) + "_" + str(round(teps, 1)) + ".txt",
                       "w+") as out_file:
                 out_file.write("eps=" + str(eps) + " days/eps=" + str(teps) + "\n\n")
                 for rank, birds in ranking.items():
                     for bird in birds:
                         out_file.write(str(rank) + ". " + bird[0] + " (" + str(bird[1]) + ")\n")
+
+
+# Read all the generated ranking files and save them into a dictionary
+def read_ranking_files(ranking_dir="ranks/"):
+    rank_dict = {}
+    for filename in os.listdir(ranking_dir):
+        if not filename.endswith("txt"):
+            continue
+
+        with open(ranking_dir + filename, 'r') as in_file:
+            filename_arr = filename[:len(filename) - 4].split('_')
+            eps = float(filename_arr[0])
+            teps = float(filename_arr[1])
+            rank_dict[(eps, teps)] = collections.defaultdict(lambda : [])
+
+            # Iterate through rank file, skipping header
+            lines = in_file.readlines()[2:]
+            for line in lines:
+                rank = line.split('.')[0]
+                species = line[line.find(". ") + 2:line.rfind(" (")]
+                count = int(line[line.find('(') + 1:line.rfind(')')])
+                rank_dict[(eps, teps)][rank].append( (species, count) )
+    rank_dict = dict(sorted(rank_dict.items(), key=lambda x: (x[0][0], x[0][1]), reverse=False))
+    return rank_dict
+
+
+# Take a dictionary of rankings, with parameter tuple as key and ranks as values, and get the ranking and parameter matrices given the
+# length of the eps and teps lists
+# If flatten is enabled, discard all tie and cluster information and return a matrix of simple ranked list instead (for kendall tau)
+def rank_dict_to_matrix(rank_dict : dict, n_eps : int, n_teps : int, flatten = False):
+    ranks_matrix = np.empty((n_eps, n_teps), dtype=list)
+    prams_matrix = np.empty((n_eps, n_teps), dtype=list)
+
+    prams = list(rank_dict.keys())
+    ranks = list(rank_dict.values())
+
+    for i in range(len(prams)):
+        i_eps = int(i / n_eps)
+        i_teps = i % n_eps
+
+        ranks_matrix[i_eps][i_teps] = [t[0] for r in list(ranks[i].values()) for t in r] if flatten else ranks[i]
+        prams_matrix[i_eps][i_teps] = prams[i]
+
+    return ranks_matrix, prams_matrix
+
+
+# Get the most common ranking from the rank files
+def find_most_common_ranking(ranking_dir="ranks/"):
+    rank_dict = read_ranking_files(ranking_dir)
+    rank_frequency_dict = collections.defaultdict(lambda : 0)
+    for parameter, rank in rank_dict.items():
+        rank = dict([(parameters, [bird[0] for bird in birds]) for (parameters, birds) in rank.items()])
+        rank_frequency_dict[str(rank)] += 1
+
+    rank_frequency_dict = dict(sorted(rank_frequency_dict.items(), key=lambda x: x[1], reverse=True))
+
+    return list(rank_frequency_dict.items())[0]
+
+
+# Generate a ranking from the pairwise comparison matrix csv (UNFINISHED)
+def matrix_to_rank(csv):
+    with open(csv) as csv_file:
+        return
+
+
+# Compute the Kendall tau distance between two ranked lists.
+def normalized_kendall_tau_distance(values1, values2):
+    n = len(values1)
+    assert len(values2) == n, "Both lists have to be of equal length"
+    i, j = np.meshgrid(np.arange(n), np.arange(n))
+    a = np.argsort(values1)
+    b = np.argsort(values2)
+    ndisordered = np.logical_or(np.logical_and(a[i] < a[j], b[i] > b[j]), np.logical_and(a[i] > a[j], b[i] < b[j])).sum()
+    return ndisordered / (n * (n - 1))
 
 
 if __name__ == "__main__":
@@ -246,8 +320,10 @@ if __name__ == "__main__":
     species = [
         "Hudsonian Godwit", "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
     ]
-    print(get_unclustered_ranking(species))
-    print(get_dbscan_ranking(species, 2, 7))
+    # print(get_unclustered_ranking(species))
+    # print(get_dbscan_ranking(species, 2, 7))
     eps_list = np.linspace(.5, 30, 60)
     ratio_list = np.linspace(.5, 30, 60)
     generate_ranking_files(species, eps_list, ratio_list)
+    # read_ranking_files()
+    # find_most_common_ranking()
