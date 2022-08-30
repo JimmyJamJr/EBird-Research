@@ -85,41 +85,7 @@ def species_pairwise_comp(species_list : list, eps_list, teps_list, save_dir="pa
                     comp_matrix[i][j] = next((next(count for name, count in v if name == speciesA)) for k, v in iter(rank.items()) if any(name == speciesA for (name, count) in v)) - next((next(count for name, count in v if name == speciesB)) for k, v in iter(rank.items()) if any(name == speciesB for (name, count) in v))
 
             # Create image figure using plotly express
-            fig = create_im_graph(comp_matrix, '<span style="font-size: 24px;">{0} vs {1} Rarity</span><br><sup>Calculated as # of Clusters of {0} - {1}</sup>'.format(speciesA, speciesB), "Cluster Count Difference", eps_list, teps_list)
-            # fig = px.imshow(comp_matrix.T,
-            #                 x=eps_list,
-            #                 y=teps_list,
-            #                 color_continuous_scale='RdBu_r',
-            #                 labels=dict(x="eps (miles)", y="teps (days)", color="Cluster Count Difference"),
-            #                 color_continuous_midpoint=0,
-            #                 text_auto=True,
-            #                 origin='lower')
-            #
-            # # Aded title and axis marks
-            # fig.update_layout(
-            #     title='<span style="font-size: 24px;">{0} vs {1} Rarity</span><br><sup>Calculated as # of Clusters of {0} - {1}</sup>'.format(speciesA, speciesB),
-            #     font=dict(
-            #         family="Courier New, monospace",
-            #         size=12,
-            #         color="RebeccaPurple"
-            #     ),
-            #     xaxis=dict(
-            #         tickmode='array',
-            #         tickvals=np.linspace(0, int(eps_list[-1]), int(eps_list[-1]) + 1),
-            #         ticktext=np.linspace(0, int(eps_list[-1]), int(eps_list[-1]) + 1)
-            #     ),
-            #     yaxis=dict(
-            #         tickmode='array',
-            #         tickvals=np.linspace(0, int(teps_list[-1]), int(teps_list[-1]) + 1),
-            #         ticktext=np.linspace(0, int(teps_list[-1]), int(teps_list[-1]) + 1)
-            #     ),
-            #     coloraxis_colorbar=dict(
-            #         thicknessmode="pixels", thickness=25,
-            #         lenmode="pixels", len=500,
-            #     ),
-            #     showlegend=False,
-            #     margin=dict(l=35, r=35, t=35, b=35),
-            # )
+            fig = create_im_graph(comp_matrix, '<span style="font-size: 24px;">{0} vs {1} Rarity</span><br><sup>Calculated as # of Clusters of {0} - {1} (Blue means {0} is more rare)</sup>'.format(speciesA, speciesB), "Cluster Count Difference", eps_list, teps_list)
 
             # If two species are provided, open interactive graph, else save graph to save folder
             if len(species_list) == 2:
@@ -186,10 +152,14 @@ def max_localized_difference_graph(radius, eps_list, teps_list):
     fig.show()
 
 if __name__ == "__main__":
+    old_species = [
+        "Hudsonian Godwit", "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
+    ]
     species = [
-        "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
-    ]\
+        "Black-and-white Warbler", "Black-throated Blue Warbler", "Common Tern", "Groove-billed Ani", "Kentucky Warbler", "Lesser Black-backed Gull", "Long-tailed Jaeger", "Painted Bunting", "Parasitic Jaeger", "Prothonotary Warbler", "Roseate Spoonbill", "Ruff", "Rufous-backed Robin", "Sabines Gull", "Tennessee Warbler", "White Ibis"
+    ]
     # species = ["Hudsonian Godwit", "Pomarine Jaeger"]
-    menu()
-    # species_pairwise_comp(species, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
-    max_localized_difference_graph(5, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
+    # menu()
+    EBirdUtil.generate_ranking_files(species, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
+    species_pairwise_comp(species, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
+    # max_localized_difference_graph(5, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
