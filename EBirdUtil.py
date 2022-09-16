@@ -65,7 +65,7 @@ def separate_species_data(filename, bird_folder, replace_existing, match_list=[]
             # Check with match list
             if len(match_list) == 0 or line_arr[4] in match_list:
                 # Add to species count dictionary
-                species = clean_name(line_arr[4])
+                species = clean_name(line_arr[5])
                 species_dict[species] += 1
 
                 # Open species file and write observation
@@ -91,7 +91,7 @@ def get_single_obs_species(filename):
             line_arr = line.split("\t")
 
             # Add to species count dictionary
-            species = clean_name(line_arr[4])
+            species = clean_name(line_arr[5])
             species_dict[species] += 1
 
         for species, count in species_dict.items():
@@ -117,18 +117,18 @@ def get_species_obs(species, birds_folder="birds/"):
     with open(birds_folder + species + ".txt") as file:
         for line in file:
             line_arr = line.split("\t")
-            if line_arr[28] == "":
-                time = datetime.strptime(line_arr[27], "%Y-%m-%d")
+            if line_arr[31] == "":
+                time = datetime.strptime(line_arr[30], "%Y-%m-%d")
             else:
-                time = datetime.strptime(line_arr[27] + " " + line_arr[28], '%Y-%m-%d %H:%M:%S')
+                time = datetime.strptime(line_arr[30] + " " + line_arr[31], '%Y-%m-%d %H:%M:%S')
 
             order = float(line_arr[2])
 
             # If observation count is not given, set to 1
-            count = 1 if line_arr[8] == "X" else int(line_arr[8])
-            latitude = line_arr[25]
-            longitude = line_arr[26]
-            distance = 0 if line_arr[35] == "" else float(line_arr[35])
+            count = 1 if line_arr[10] == "X" else int(line_arr[10])
+            latitude = line_arr[28]
+            longitude = line_arr[29]
+            distance = 0 if line_arr[40] == "" else float(line_arr[40])
             # print("order: ", order, "count: ", count, "lat: ", latitude, "long: ", longitude, "distance: ", distance, "time: ", time)
 
             observations.append(Observation(time, order, int(count), float(latitude), float(longitude), distance))
@@ -314,16 +314,20 @@ def normalized_kendall_tau_distance(values1, values2):
     return ndisordered / (n * (n - 1))
 
 
-if __name__ == "__main__":
-    # separate_species_data(filename="ebd_US-NV_relFeb-2021.txt", bird_folder="birds", replace_existing=True)
+def create_aggregate_rank(rank_list):
+    pass
 
-    species = [
-        "Hudsonian Godwit", "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
-    ]
-    # print(get_unclustered_ranking(species))
-    # print(get_dbscan_ranking(species, 2, 7))
-    eps_list = np.linspace(.5, 30, 60)
-    ratio_list = np.linspace(.5, 30, 60)
-    generate_ranking_files(species, eps_list, ratio_list)
+
+if __name__ == "__main__":
+    # separate_species_data(filename="ebd_US-NV_relJul-2022.txt", bird_folder="birds", replace_existing=True)
+
+    # species = [
+    #     "Hudsonian Godwit", "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
+    # ]
+    print(get_unclustered_ranking(species))
+    # # print(get_dbscan_ranking(species, 2, 7))
+    # eps_list = np.linspace(.5, 30, 60)
+    # ratio_list = np.linspace(.5, 30, 60)
+    # generate_ranking_files(species, eps_list, ratio_list)
     # read_ranking_files()
     # find_most_common_ranking()

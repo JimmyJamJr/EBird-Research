@@ -151,15 +151,19 @@ def max_localized_difference_graph(radius, eps_list, teps_list):
 
     fig.show()
 
+
 if __name__ == "__main__":
     old_species = [
         "Hudsonian Godwit", "Ruff", "Groove-billed Ani", "Acorn Woodpecker", "Brown Thrasher", "Eastern Phoebe", "Gray Catbird", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Long-tailed Jaeger", "Mew Gull", "Parasitic Jaeger", "Pomarine Jaeger", "Red Phalarope", "Red-faced Warbler", "Sabines Gull"
     ]
-    species = [
-        "Black-and-white Warbler", "Black-throated Blue Warbler", "Common Tern", "Groove-billed Ani", "Kentucky Warbler", "Lesser Black-backed Gull", "Long-tailed Jaeger", "Painted Bunting", "Parasitic Jaeger", "Prothonotary Warbler", "Roseate Spoonbill", "Ruff", "Rufous-backed Robin", "Sabines Gull", "Tennessee Warbler", "White Ibis"
+    fall_species = [
+        "Black-and-white Warbler", "Black-throated Blue Warbler", "Common Tern", "Groove-billed Ani", "Kentucky Warbler", "Lesser Black-backed Gull", "Long-tailed Jaeger", "Nelsons Sparrow", "Painted Bunting", "Parasitic Jaeger", "Prothonotary Warbler", "Roseate Spoonbill", "Ruff", "Rufous-backed Robin", "Sabines Gull", "Tennessee Warbler", "White Ibis"
+    ]
+    winter_species = [
+        "Blue Jay", "Bohemian Waxwing", "Bonapartes Gull", "Brown Thrasher", "Common Redpoll", "Couchs Kingbird", "Glaucous Gull", "Groove-billed Ani", "Huttons Vireo", "Lark Bunting", "Lesser Black-backed Gull", "Long-tailed Duck", "Red-necked Grebe", "Red-throated Loon", "Short-billed Gull", "Slaty-backed Gull"
     ]
     # species = ["Hudsonian Godwit", "Pomarine Jaeger"]
     # menu()
-    EBirdUtil.generate_ranking_files(species, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
-    species_pairwise_comp(species, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
+    EBirdUtil.generate_ranking_files(winter_species, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
+    species_pairwise_comp(winter_species, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
     # max_localized_difference_graph(5, np.linspace(.5, 30, 60), np.linspace(.5, 30, 60))
